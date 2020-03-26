@@ -2,17 +2,18 @@ package linter
 
 import (
 	"fmt"
-	"github.com/madvikinggod/kubelint/pkg/message"
 	"io"
+
+	"github.com/madvikinggod/kubelint/pkg/message"
 
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 type linter struct {
-	cfg LinterConfig
+	cfg Config
 }
 
-func NewLinter(cfg LinterConfig) *linter {
+func NewLinter(cfg Config) *linter {
 	return &linter{
 		cfg: cfg,
 	}

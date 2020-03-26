@@ -5,12 +5,14 @@ import (
 	"github.com/madvikinggod/kubelint/pkg/rules/builtin"
 )
 
-type LinterConfig struct {
+// Config is used to control high level functionality, like fail on warnings or which rules are checked..
+type Config struct {
 	Rules map[string][]rules.Rule
 }
 
-func DefaultConfig() LinterConfig {
-	return LinterConfig{
+// DefaultConfig provides a default config, the one used if no flags are toggeled.
+func DefaultConfig() Config {
+	return Config{
 		Rules: builtin.DefaultRules,
 	}
 }

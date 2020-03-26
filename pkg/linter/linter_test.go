@@ -1,9 +1,10 @@
 package linter
 
 import (
+	"testing"
+
 	"github.com/madvikinggod/kubelint/pkg/rules/builtin"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"testing"
 )
 
 func Test_linter_lintObjects(t *testing.T) {
@@ -60,7 +61,7 @@ func Test_linter_lintObjects(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			l := &linter{
-				cfg: LinterConfig{Rules: builtin.DefaultRules},
+				cfg: Config{Rules: builtin.DefaultRules},
 			}
 			got := l.lintObjects(tt.objs)
 			if len(got) != len(tt.want) {
