@@ -27,10 +27,10 @@ func nName(obj *unstructured.Unstructured) string {
 }
 
 type simpleMessage struct {
-	name string
-	info string
-	gvk string
-	nName string
+	name       string
+	info       string
+	gvk        string
+	nName      string
 	isCritical bool
 }
 
@@ -39,6 +39,5 @@ func (s simpleMessage) String() string {
 }
 
 func (s simpleMessage) IsCritical() bool {
-	   return s.isCritical
+	return s.isCritical
 }
-

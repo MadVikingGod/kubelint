@@ -9,7 +9,7 @@ import (
 func Test_linter_lintObjects(t *testing.T) {
 
 	type msg struct {
-		message string
+		message    string
 		isCritical bool
 	}
 	tests := []struct {
@@ -33,7 +33,7 @@ func Test_linter_lintObjects(t *testing.T) {
 			},
 			want: []msg{
 				{
-					message: "NoRuleFound - Did not find any rules for - /Carp /bob",
+					message:    "NoRuleFound - Did not find any rules for - /Carp /bob",
 					isCritical: false,
 				},
 			},
@@ -51,7 +51,7 @@ func Test_linter_lintObjects(t *testing.T) {
 			},
 			want: []msg{
 				{
-					message: "NakedPodCheck - Pods should not be used directly. Use a deployment instead - v1/pod /pod-name",
+					message:    "NakedPodCheck - Pods should not be used directly. Use a deployment instead - v1/pod /pod-name",
 					isCritical: true,
 				},
 			},
@@ -69,10 +69,10 @@ func Test_linter_lintObjects(t *testing.T) {
 			}
 			for i := range got {
 				if got[i].String() != tt.want[i].message {
-					t.Errorf("Message missmatch: got = %s, want = %s", got[i].String() , tt.want[i].message)
+					t.Errorf("Message missmatch: got = %s, want = %s", got[i].String(), tt.want[i].message)
 				}
 				if got[i].IsCritical() != tt.want[i].isCritical {
-					t.Errorf("Message critical: got = %t, want = %t", got[i].IsCritical() , tt.want[i].isCritical)
+					t.Errorf("Message critical: got = %t, want = %t", got[i].IsCritical(), tt.want[i].isCritical)
 				}
 			}
 		})

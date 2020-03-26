@@ -11,7 +11,7 @@ func TestNakedPodCheck_Check(t *testing.T) {
 		obj *unstructured.Unstructured
 	}
 	type want struct {
-		message string
+		message    string
 		isCritical bool
 	}
 	tests := []struct {
@@ -34,7 +34,7 @@ func TestNakedPodCheck_Check(t *testing.T) {
 				},
 			},
 			want: want{
-				message: fmt.Sprintf("NakedPodCheck - %s - v1/pod test-pod-namespace/test-pod-name", NakedPodCheckStr),
+				message:    fmt.Sprintf("NakedPodCheck - %s - v1/pod test-pod-namespace/test-pod-name", NakedPodCheckStr),
 				isCritical: true,
 			},
 		},

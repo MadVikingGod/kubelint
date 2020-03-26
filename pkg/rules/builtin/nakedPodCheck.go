@@ -10,9 +10,9 @@ type NakedPodCheck struct{}
 
 var NakedPodCheckStr = "Pods should not be used directly. Use a deployment instead"
 var NakedPodCheckMsg = simpleMessage{
-	name: "NakedPodCheck",
-	info: NakedPodCheckStr,
-	isCritical:true,
+	name:       "NakedPodCheck",
+	info:       NakedPodCheckStr,
+	isCritical: true,
 }
 
 func (n NakedPodCheck) Check(obj *unstructured.Unstructured) message.Message {

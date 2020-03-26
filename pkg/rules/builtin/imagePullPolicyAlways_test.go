@@ -8,7 +8,7 @@ import (
 
 func TestImagePullPolicyAlways_Check(t *testing.T) {
 	type want struct {
-		message string
+		message    string
 		isCritical bool
 	}
 	tests := []struct {
@@ -20,7 +20,7 @@ func TestImagePullPolicyAlways_Check(t *testing.T) {
 			name: "Should fail if Image pull policy is empty",
 			args: testdata.NoImagePullPolicyUnstructured(),
 			want: &want{
-				message: "ImagePullPolicyAlways - container noImagePullPolicyContainer has an image pull policy of %!s(<nil>), it should be Alaways - apps/v1/Deployment noImagePullPolicy/noImagePullPolicy",
+				message:    "ImagePullPolicyAlways - container noImagePullPolicyContainer has an image pull policy of %!s(<nil>), it should be Alaways - apps/v1/Deployment noImagePullPolicy/noImagePullPolicy",
 				isCritical: true,
 			},
 		},
@@ -28,8 +28,8 @@ func TestImagePullPolicyAlways_Check(t *testing.T) {
 			name: "Should fail if Image pull policy is not always",
 			args: testdata.NeverImagePullPolicyUnstructured(),
 			want: &want{
-				message: "ImagePullPolicyAlways - container neverImagePullPolicyContainer has an image pull policy of Never, it should be Alaways - apps/v1/Deployment neverImagePullPolicy/neverImagePullPolicy",
-				isCritical:true,
+				message:    "ImagePullPolicyAlways - container neverImagePullPolicyContainer has an image pull policy of Never, it should be Alaways - apps/v1/Deployment neverImagePullPolicy/neverImagePullPolicy",
+				isCritical: true,
 			},
 		},
 		{
@@ -41,8 +41,8 @@ func TestImagePullPolicyAlways_Check(t *testing.T) {
 			name: "Should fail if Image pull policy for any continer is empty",
 			args: testdata.MultiImagePullPolicyUnstructured(),
 			want: &want{
-				message: "ImagePullPolicyAlways - container multiImagePullPolicyContainer-fail has an image pull policy of Never, it should be Alaways - apps/v1/Deployment multiImagePullPolicy/multiImagePullPolicy",
-				isCritical:true,
+				message:    "ImagePullPolicyAlways - container multiImagePullPolicyContainer-fail has an image pull policy of Never, it should be Alaways - apps/v1/Deployment multiImagePullPolicy/multiImagePullPolicy",
+				isCritical: true,
 			},
 		},
 	}

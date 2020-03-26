@@ -8,6 +8,7 @@ import (
 )
 
 type ImagePullPolicyAlways struct{}
+
 var imagePullPolicyAlwaysStr = "imagePullPolicy should be set to Always"
 
 func (i ImagePullPolicyAlways) Check(obj *unstructured.Unstructured) message.Message {
@@ -24,7 +25,6 @@ func (i ImagePullPolicyAlways) Check(obj *unstructured.Unstructured) message.Mes
 		}
 		return &msg
 	}
-
 
 	for _, inter := range containers {
 		container := inter.(map[string]interface{})

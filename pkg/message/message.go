@@ -13,10 +13,10 @@ type Message interface {
 }
 
 type SimpleMessage struct {
-	Name string
-	Info string
-	Gvk string
-	NName string
+	Name   string
+	Info   string
+	Gvk    string
+	NName  string
 	IsCrit bool
 }
 
