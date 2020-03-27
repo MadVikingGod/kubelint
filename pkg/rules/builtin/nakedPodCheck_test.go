@@ -41,8 +41,7 @@ func TestNakedPodCheck_Check(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			n := NakedPodCheck{}
-			got := n.Check(tt.args.obj)
+			got := NakedPodCheck(tt.args.obj)
 			if got.String() != tt.want.message {
 				t.Errorf("Check().String() = %v, want %v", got.String(), tt.want.message)
 			}

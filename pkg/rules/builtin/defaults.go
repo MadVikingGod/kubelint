@@ -3,7 +3,9 @@ package builtin
 import (
 	"fmt"
 	"github.com/madvikinggod/kubelint/pkg/rules"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	appsv1 "k8s.io/api/apps/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
 var DefaultRules = map[string][]rules.Rule{}
@@ -19,10 +21,18 @@ func registerRule(r rules.Rule, gvks []string) {
 	}
 }
 
-func gvk(obj *unstructured.Unstructured) string {
-	return obj.GetAPIVersion() + "/" + obj.GetKind()
+type object interface {
+	GroupVersionKind() schema.GroupVersionKind
+	GetObjectKind() schema.ObjectKind
+	GetNamespace() string
+	GetName() string
 }
-func nName(obj *unstructured.Unstructured) string {
+
+func gvk(obj object) string {
+	gvk := obj.GroupVersionKind()
+	return gvk.GroupVersion().String() + "/" + gvk.Kind
+}
+func nName(obj object) string {
 	return obj.GetNamespace() + "/" + obj.GetName()
 }
 
@@ -40,4 +50,20 @@ func (s simpleMessage) String() string {
 
 func (s simpleMessage) IsCritical() bool {
 	return s.isCritical
+}
+
+func (s *simpleMessage) addObjInfo(obj object) {
+	s.gvk = gvk(obj)
+	s.nName = nName(obj)
+}
+
+var scheme *runtime.Scheme
+
+func getScheme() *runtime.Scheme{
+	if scheme != nil {
+		return scheme
+	}
+	scheme = runtime.NewScheme()
+	appsv1.AddToScheme(scheme)
+	return scheme
 }

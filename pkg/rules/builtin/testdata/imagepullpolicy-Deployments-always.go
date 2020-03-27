@@ -7,7 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-var AlwaysImagePullPolicyYaml = `apiVersion: apps/v1
+var imagePullPolicyAlwaysYaml = `apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: alwaysImagePullPolicy
@@ -20,12 +20,12 @@ spec:
           imagePullPolicy: Always
 `
 
-func AlwaysImagePullPolicyUnstructured() *unstructured.Unstructured {
+func ImagePullPolicyAlwaysUnstructured() *unstructured.Unstructured {
 	scheme := runtime.NewScheme()
 	appsv1.AddToScheme(scheme)
 
 	d := &appsv1.Deployment{}
-	yaml.Unmarshal([]byte(AlwaysImagePullPolicyYaml), d)
+	yaml.Unmarshal([]byte(imagePullPolicyAlwaysYaml), d)
 
 	o := &unstructured.Unstructured{}
 	scheme.Convert(d, o, nil)

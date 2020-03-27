@@ -6,27 +6,41 @@ import (
 	"testing"
 )
 
-func TestImagePullPolicyAlways_Check(t *testing.T) {
+
+
+
+func TestImagePullPolicyAlwaysCheck(t *testing.T) {
+	type args struct {
+		obj *unstructured.Unstructured
+	}
 	type want struct {
 		message    string
 		isCritical bool
 	}
 	tests := []struct {
 		name string
-		args *unstructured.Unstructured
+		args args
 		want *want
 	}{
 		{
 			name: "Should fail if Image pull policy is empty",
-			args: testdata.NoImagePullPolicyUnstructured(),
+			args: args{testdata.NoImagePullPolicyUnstructured()},
 			want: &want{
-				message:    "ImagePullPolicyAlways - container noImagePullPolicyContainer has an image pull policy of %!s(<nil>), it should be Alaways - apps/v1/Deployment noImagePullPolicy/noImagePullPolicy",
+				message:    "ImagePullPolicyAlways - container noImagePullPolicyContainer has an image pull policy of , it should be Alaways - apps/v1/Deployment noImagePullPolicy/noImagePullPolicy",
+				isCritical: true,
+			},
+		},
+		{
+			name: "StatefulSets Should fail if Image pull policy is empty",
+			args: args{testdata.SSNoImagePullPolicyUnstructured()},
+			want: &want{
+				message:    "ImagePullPolicyAlways - container noImagePullPolicyContainer has an image pull policy of , it should be Alaways - apps/v1/Deployment noImagePullPolicy/noImagePullPolicy",
 				isCritical: true,
 			},
 		},
 		{
 			name: "Should fail if Image pull policy is not always",
-			args: testdata.NeverImagePullPolicyUnstructured(),
+			args: args{testdata.NeverImagePullPolicyUnstructured()},
 			want: &want{
 				message:    "ImagePullPolicyAlways - container neverImagePullPolicyContainer has an image pull policy of Never, it should be Alaways - apps/v1/Deployment neverImagePullPolicy/neverImagePullPolicy",
 				isCritical: true,
@@ -34,23 +48,21 @@ func TestImagePullPolicyAlways_Check(t *testing.T) {
 		},
 		{
 			name: "Should pass if Image pull policy is Always",
-			args: testdata.AlwaysImagePullPolicyUnstructured(),
+			args: args{testdata.ImagePullPolicyAlwaysUnstructured()},
 			want: nil,
 		},
 		{
 			name: "Should fail if Image pull policy for any continer is empty",
-			args: testdata.MultiImagePullPolicyUnstructured(),
+			args: args{testdata.ImagePullPolicyMultiUnstructured()},
 			want: &want{
 				message:    "ImagePullPolicyAlways - container multiImagePullPolicyContainer-fail has an image pull policy of Never, it should be Alaways - apps/v1/Deployment multiImagePullPolicy/multiImagePullPolicy",
 				isCritical: true,
 			},
 		},
 	}
-
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			i := ImagePullPolicyAlways{}
-			got := i.Check(tt.args)
+			got := ImagePullPolicyAlwaysCheck(tt.args.obj)
 			if (tt.want == nil) && (got == nil) {
 				return
 			}
