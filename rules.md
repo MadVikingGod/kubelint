@@ -8,8 +8,9 @@
 - ImageTagMissing - container images should have a tag -
 - ImagePullPolicyAlways - Warn - The image pull policy should be Always - https://kubernetes.io/docs/concepts/configuration/overview/#container-images
 - PodResourcesMissing - Pods should be configured with resources - https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-resource-requests-and-limits
-- PodReadinessMissing - Pods should be configured with readiness checks -https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes
-- PodLivenessMissing - Pods should be configure with liveness checks -https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes
+- PodReadinessMissing - Pods should be configured with readiness checks - https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes
+- PodLivenessMissing - Pods should be configure with liveness checks - https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes
+- DeprecatedApi - A number of APIs have been deprecated, should move to newer versions -  https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/
 
 
 ## How would this work?

@@ -6,7 +6,7 @@ import (
 	"github.com/madvikinggod/kubelint/pkg/rules"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
-// https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/
+
 func depractedAPICheck( newVersion string) rules.Rule {
 	return func(obj *unstructured.Unstructured) message.Message {
 		return message.SimpleMessage{
