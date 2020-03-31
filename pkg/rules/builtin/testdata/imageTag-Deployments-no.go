@@ -7,18 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-var NoImageTagYaml = `apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: noImageTag
-  namespace: noImageTag
-spec:
-  template:
-    spec:
-      containers:
-        - name: noImageTagContainer
-          image: thisDoesnthaveaTag
-`
+
 
 func NoImageTagUnstructured() *unstructured.Unstructured {
 	scheme := runtime.NewScheme()

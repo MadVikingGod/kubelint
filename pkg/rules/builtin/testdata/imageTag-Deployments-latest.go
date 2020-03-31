@@ -7,18 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 )
 
-var LatestImageTagYaml = `apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: latestImageTag
-  namespace: latestImageTag
-spec:
-  template:
-    spec:
-      containers:
-        - name: latestImageTagContainer
-          image: ImageWithLatest:latest
-`
+
 
 func LatestImageTagUnstructured() *unstructured.Unstructured {
 	scheme := runtime.NewScheme()
