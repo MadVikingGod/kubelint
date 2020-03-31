@@ -8,7 +8,7 @@ import (
 func Test_depractedAPICheck(t *testing.T) {
 	type args struct {
 		newVersion string
-		obj *unstructured.Unstructured
+		obj        *unstructured.Unstructured
 	}
 	type want struct {
 		message    string
@@ -21,19 +21,19 @@ func Test_depractedAPICheck(t *testing.T) {
 	}{
 		{
 			name: "It should fail when passed an object",
-			args:args{
+			args: args{
 				newVersion: "fake.v1/stuff",
-				obj:        &unstructured.Unstructured{Object: map[string]interface{}{
+				obj: &unstructured.Unstructured{Object: map[string]interface{}{
 					"apiVersion": "fake.v1beta1",
-					"kind": "stuff",
+					"kind":       "stuff",
 					"metadata": map[string]interface{}{
-						"name": "fake-stuff",
+						"name":      "fake-stuff",
 						"namespace": "fake-namespace",
 					},
 				}},
 			},
 			want: &want{
-				message:    "eprecatedAPICheck - fake.v1beta1/stuff should not be used, use fake.v1/stuff - fake.v1beta1/stuff fake-namespace/fake-stuff",
+				message:    "DeprecatedAPICheck - fake.v1beta1/stuff should not be used, use fake.v1/stuff - fake.v1beta1/stuff fake-namespace/fake-stuff",
 				isCritical: true,
 			},
 		},

@@ -1,11 +1,9 @@
 package message
 
-import "fmt"
-
-type Msg struct {
-	Message string
-	IsError bool
-}
+import (
+	"fmt"
+	"sigs.k8s.io/kustomize/kyaml/yaml"
+)
 
 type Message interface {
 	String() string
@@ -26,4 +24,18 @@ func (s SimpleMessage) String() string {
 
 func (s SimpleMessage) IsCritical() bool {
 	return s.IsCrit
+}
+
+type KMessage struct {
+	RuleName string
+	Info     string
+	Id       yaml.ResourceIdentifier
+	IsCrit   bool
+}
+
+func (k KMessage) String() string {
+	return fmt.Sprintf("%s - %s - %s", k.RuleName, k.Info, k.Id)
+}
+func (k KMessage) IsCritical() bool {
+	return k.IsCrit
 }

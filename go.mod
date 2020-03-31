@@ -10,4 +10,5 @@ require (
 	golang.org/x/net v0.0.0-20200226121028-0de0cce0169b // indirect
 	k8s.io/api v0.17.4
 	k8s.io/apimachinery v0.17.4
+	sigs.k8s.io/kustomize/kyaml v0.1.3
 )

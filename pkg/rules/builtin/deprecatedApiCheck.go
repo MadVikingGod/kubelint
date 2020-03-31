@@ -7,7 +7,7 @@ import (
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-func depractedAPICheck( newVersion string) rules.Rule {
+func depractedAPICheck(newVersion string) rules.Rule {
 	return func(obj *unstructured.Unstructured) message.Message {
 		return message.SimpleMessage{
 			Name:   "DeprecatedAPICheck",

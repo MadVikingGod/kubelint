@@ -9,6 +9,7 @@ import (
 )
 
 var DefaultRules = map[string][]rules.Rule{}
+var DefaultKRules = map[string][]rules.KRule{}
 
 func registerRule(r rules.Rule, gvks []string) {
 	for _, gvk := range gvks {
@@ -18,6 +19,16 @@ func registerRule(r rules.Rule, gvks []string) {
 			continue
 		}
 		DefaultRules[gvk] = append(rls, r)
+	}
+}
+func registerKRule(r rules.KRule, gvks []string) {
+	for _, gvk := range gvks {
+		rls, found := DefaultKRules[gvk]
+		if !found {
+			DefaultKRules[gvk] = []rules.KRule{r}
+			continue
+		}
+		DefaultKRules[gvk] = append(rls, r)
 	}
 }
 
@@ -59,7 +70,7 @@ func (s *simpleMessage) addObjInfo(obj object) {
 
 var scheme *runtime.Scheme
 
-func getScheme() *runtime.Scheme{
+func getScheme() *runtime.Scheme {
 	if scheme != nil {
 		return scheme
 	}
