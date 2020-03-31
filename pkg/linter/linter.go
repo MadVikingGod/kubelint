@@ -55,18 +55,34 @@ func (l *linter) lintObjects(objs []*yaml.RNode) []message.Message {
 	msgs := []message.Message{}
 	for _, obj := range objs {
 		id, err := obj.GetMeta()
+		if err != nil {
+			msgs = append(msgs, message.SimpleMessage{
+				Name:   "Linting",
+				Info:   "Could not get objects metadata:\n" + obj.MustString(),
+				IsCrit: true,
+			})
+			continue
+		}
 		tm := yaml.TypeMeta{
 			Kind:       id.Kind,
 			APIVersion: id.APIVersion,
 		}
-		if err != nil {
-			msgs = append(msgs, message.SimpleMessage{
-				Name:   "ReadingObject",
-				Info:   "Could not get objects metadata:\n" + obj.MustString(),
-				IsCrit: false,
+		rules, found := l.cfg.Rules[tm]
+		if !found {
+			msgs = append(msgs, message.KMessage{
+				RuleName: "Linting",
+				Info:     "No rule found",
+				Id:       id.GetIdentifier(),
+				IsCrit:   false,
 			})
+			continue
 		}
-		id.GetIdentifier()
+		for _, rule := range rules {
+			msg := rule(obj, id.GetIdentifier())
+			if msg != nil {
+				msgs = append(msgs, msg)
+			}
+		}
 	}
 	return msgs
 }

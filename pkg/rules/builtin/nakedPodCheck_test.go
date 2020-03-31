@@ -1,15 +1,13 @@
 package builtin
 
 import (
-	"fmt"
+	"sigs.k8s.io/kustomize/kyaml/yaml"
 	"testing"
-
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
-func TestNakedPodCheck_Check(t *testing.T) {
+func TestNakedPodCheck(t *testing.T) {
 	type args struct {
-		obj *unstructured.Unstructured
+		yaml string
 	}
 	type want struct {
 		message    string
@@ -18,31 +16,38 @@ func TestNakedPodCheck_Check(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want want
+		want *want
 	}{
 		{
-			name: "pods should return msg",
+			name: "Pods should always fail",
 			args: args{
-				obj: &unstructured.Unstructured{
-					Object: map[string]interface{}{
-						"apiVersion": "v1",
-						"kind":       "pod",
-						"metadata": map[string]interface{}{
-							"name":      "test-pod-name",
-							"namespace": "test-pod-namespace",
-						},
-					},
-				},
+				yaml: `apiVersion: v1
+kind: Pod
+metadata:
+  name: test-pod
+  namespace: pod-namespace
+`,
 			},
-			want: want{
-				message:    fmt.Sprintf("NakedPodCheck - %s - v1/pod test-pod-namespace/test-pod-name", NakedPodCheckStr),
+			want: &want{
+				message:    "NakedPodCheck - Pods should not be used directly, apps/v1 Deployments are recommended - {test-pod pod-namespace v1 Pod}",
 				isCritical: true,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := NakedPodCheck(tt.args.obj)
+			obj, _ := yaml.Parse(tt.args.yaml)
+			meta, _ := obj.GetMeta()
+
+			got := NakedPodCheck(obj, meta.GetIdentifier())
+
+			if (tt.want == nil) && (got == nil) {
+				return
+			}
+			if (tt.want == nil) != (got == nil) {
+				t.Fatalf("Check() = %t, want %t", tt.want == nil, got == nil)
+
+			}
 			if got.String() != tt.want.message {
 				t.Errorf("Check().String() = %v, want %v", got.String(), tt.want.message)
 			}
