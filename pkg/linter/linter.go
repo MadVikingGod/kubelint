@@ -3,7 +3,6 @@ package linter
 import (
 	"fmt"
 	"io"
-	"os"
 	"sigs.k8s.io/kustomize/kyaml/kio"
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 
@@ -23,7 +22,7 @@ func NewLinter(cfg Config) *linter {
 func (l *linter) Run(src io.Reader) error {
 
 	//read each yaml file into a "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	objs, err := readObjects(os.Stdin)
+	objs, err := readObjects(src)
 	if err != nil {
 		return err
 	}

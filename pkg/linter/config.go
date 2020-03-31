@@ -14,6 +14,6 @@ type Config struct {
 // DefaultConfig provides a default config, the one used if no flags are toggeled.
 func DefaultConfig() Config {
 	return Config{
-		Rules: builtin.DefaultKRules,
+		Rules: builtin.DefaultRules,
 	}
 }

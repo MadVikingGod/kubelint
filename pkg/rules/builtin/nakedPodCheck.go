@@ -23,7 +23,7 @@ func NakedPodCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) message.Message 
 
 func init() {
 
-	registerKRule(NakedPodCheck, []yaml.TypeMeta{
+	registerRule(NakedPodCheck, []yaml.TypeMeta{
 		{"Pod", "v1"},
 	})
 }
