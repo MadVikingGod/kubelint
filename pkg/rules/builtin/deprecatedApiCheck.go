@@ -8,7 +8,7 @@ import (
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
-func depractedAPICheck(newVersion yaml.TypeMeta) rules.KRule {
+func depractedAPICheck(newVersion yaml.TypeMeta) rules.Rule {
 	return func(obj *yaml.RNode, id yaml.ResourceIdentifier) message.Message {
 		tm := yaml.TypeMeta{
 			Kind:       id.Kind,

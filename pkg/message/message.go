@@ -14,13 +14,11 @@ type Message interface {
 type SimpleMessage struct {
 	Name   string
 	Info   string
-	Gvk    string
-	NName  string
 	IsCrit bool
 }
 
 func (s SimpleMessage) String() string {
-	return fmt.Sprintf("%s - %s - %s %s", s.Name, s.Info, s.Gvk, s.NName)
+	return fmt.Sprintf("%s - %s ", s.Name, s.Info)
 }
 
 func (s SimpleMessage) IsCritical() bool {

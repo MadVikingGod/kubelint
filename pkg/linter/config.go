@@ -8,7 +8,7 @@ import (
 
 // Config is used to control high level functionality, like fail on warnings or which rules are checked..
 type Config struct {
-	Rules map[yaml.TypeMeta][]rules.KRule
+	Rules map[yaml.TypeMeta][]rules.Rule
 }
 
 // DefaultConfig provides a default config, the one used if no flags are toggeled.
