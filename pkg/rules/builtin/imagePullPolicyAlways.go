@@ -65,10 +65,10 @@ func ImagePullPolicyAlwaysCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) mes
 func init() {
 
 	registerRule(ImagePullPolicyAlwaysCheck, []yaml.TypeMeta{
-		{"Deployment", "apps.v1"},
-		{"StatefulSet", "apps.v1"},
-		{"ReplicaSet", "apps.v1"},
-		{"DaemonSet", "apps.v1"},
-		{"Job", "batch.v1"},
+		{"Deployment", "apps/v1"},
+		{"StatefulSet", "apps/v1"},
+		{"ReplicaSet", "apps/v1"},
+		{"DaemonSet", "apps/v1"},
+		{"Job", "batch/v1"},
 	})
 }

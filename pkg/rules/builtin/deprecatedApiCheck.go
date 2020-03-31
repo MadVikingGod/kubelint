@@ -24,29 +24,29 @@ func depractedAPICheck(newVersion yaml.TypeMeta) rules.Rule {
 }
 
 func init() {
-	registerRule(depractedAPICheck(yaml.TypeMeta{"NetworkPolicy", "networking.k8s.io.v1"}), []yaml.TypeMeta{
+	registerRule(depractedAPICheck(yaml.TypeMeta{"NetworkPolicy", "networking.k8s.io/v1"}), []yaml.TypeMeta{
 		{"NetworkPolicy", "extensions/v1beta1"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"PodSecurityPolicy", "extensions.v1beta1"}), []yaml.TypeMeta{
-		{"PodSecurityPolicy", "policy.v1beta1"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{"PodSecurityPolicy", "extensions/v1beta1"}), []yaml.TypeMeta{
+		{"PodSecurityPolicy", "policy/v1beta1"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"DaemonSet", "apps.v1"}), []yaml.TypeMeta{
-		{"DaemonSet", "extensions.v1beta1"},
-		{"DaemonSet", "apps.v1beta2"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{"DaemonSet", "apps/v1"}), []yaml.TypeMeta{
+		{"DaemonSet", "extensions/v1beta1"},
+		{"DaemonSet", "apps/v1beta2"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"Deployment", "apps.v1"}), []yaml.TypeMeta{
-		{"Deployment", "extensions.v1beta1"},
-		{"Deployment", "apps.v1beta1"},
-		{"Deployment", "apps.v1beta2"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{"Deployment", "apps/v1"}), []yaml.TypeMeta{
+		{"Deployment", "extensions/v1beta1"},
+		{"Deployment", "apps/v1beta1"},
+		{"Deployment", "apps/v1beta2"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"StatefulSet", "apps.v1"}), []yaml.TypeMeta{
-		{"StatefulSet", "apps.v1beta1"},
-		{"StatefulSet", "apps.v1beta2"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{"StatefulSet", "apps/v1"}), []yaml.TypeMeta{
+		{"StatefulSet", "apps/v1beta1"},
+		{"StatefulSet", "apps/v1beta2"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"ReplicaSet", "apps.v1"}), []yaml.TypeMeta{
-		{"ReplicaSet", "extensions.v1beta1"},
-		{"ReplicaSet", "apps.v1beta1"},
-		{"ReplicaSet", "apps.v1beta2"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{"ReplicaSet", "apps/v1"}), []yaml.TypeMeta{
+		{"ReplicaSet", "extensions/v1beta1"},
+		{"ReplicaSet", "apps/v1beta1"},
+		{"ReplicaSet", "apps/v1beta2"},
 	})
 
 }

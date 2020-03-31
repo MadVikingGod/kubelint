@@ -20,8 +20,6 @@ func NewLinter(cfg Config) *linter {
 }
 
 func (l *linter) Run(src io.Reader) error {
-
-	//read each yaml file into a "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 	objs, err := readObjects(src)
 	if err != nil {
 		return err
@@ -37,7 +35,7 @@ func (l *linter) Run(src io.Reader) error {
 		}
 	}
 	if fail > 0 {
-		return fmt.Errorf("Encountered %d errors", fail)
+		return fmt.Errorf("Encountered %d critical errors", fail)
 	}
 
 	return nil

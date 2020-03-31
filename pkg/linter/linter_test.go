@@ -1,7 +1,6 @@
 package linter
 
 import (
-	"fmt"
 	"github.com/madvikinggod/kubelint/pkg/rules/builtin"
 	"io"
 	"sigs.k8s.io/kustomize/kyaml/kio"
@@ -50,9 +49,6 @@ kind: otherTest`)},
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			got, err := readObjects(tt.args.reader)
-			for _, n := range got {
-				fmt.Println(n.MustString())
-			}
 			if (err != nil) != tt.wantErr {
 				t.Errorf("readObjects() error = %v, wantErr %v", err, tt.wantErr)
 				return
