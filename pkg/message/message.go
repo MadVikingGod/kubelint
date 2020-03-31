@@ -2,6 +2,7 @@ package message
 
 import (
 	"fmt"
+
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 

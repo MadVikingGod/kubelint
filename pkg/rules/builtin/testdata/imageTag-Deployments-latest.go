@@ -32,4 +32,3 @@ func LatestImageTagUnstructured() *unstructured.Unstructured {
 
 	return o
 }
-

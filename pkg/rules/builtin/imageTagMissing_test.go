@@ -1,9 +1,10 @@
 package builtin
 
 import (
+	"testing"
+
 	"github.com/madvikinggod/kubelint/pkg/rules/builtin/testdata"
 	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	"testing"
 )
 
 func TestImageTagMissingCheckDeployment(t *testing.T) {

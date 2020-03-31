@@ -2,6 +2,8 @@ package builtin
 
 import (
 	"fmt"
+	"sigs.k8s.io/kustomize/kyaml/yaml"
+
 	"github.com/madvikinggod/kubelint/pkg/rules"
 	appsv1 "k8s.io/api/apps/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -9,8 +11,18 @@ import (
 )
 
 var DefaultRules = map[string][]rules.Rule{}
-var DefaultKRules = map[string][]rules.KRule{}
+var DefaultKRules = map[yaml.TypeMeta][]rules.KRule{}
 
+func registerKRule(r rules.KRule, gvks []yaml.TypeMeta) {
+	for _, gvk := range gvks {
+		rls, found := DefaultKRules[gvk]
+		if !found {
+			DefaultKRules[gvk] = []rules.KRule{r}
+			continue
+		}
+		DefaultKRules[gvk] = append(rls, r)
+	}
+}
 func registerRule(r rules.Rule, gvks []string) {
 	for _, gvk := range gvks {
 		rls, found := DefaultRules[gvk]
@@ -19,16 +31,6 @@ func registerRule(r rules.Rule, gvks []string) {
 			continue
 		}
 		DefaultRules[gvk] = append(rls, r)
-	}
-}
-func registerKRule(r rules.KRule, gvks []string) {
-	for _, gvk := range gvks {
-		rls, found := DefaultKRules[gvk]
-		if !found {
-			DefaultKRules[gvk] = []rules.KRule{r}
-			continue
-		}
-		DefaultKRules[gvk] = append(rls, r)
 	}
 }
 

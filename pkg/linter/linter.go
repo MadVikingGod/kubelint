@@ -3,10 +3,11 @@ package linter
 import (
 	"fmt"
 	"io"
+	"os"
+	"sigs.k8s.io/kustomize/kyaml/kio"
+	"sigs.k8s.io/kustomize/kyaml/yaml"
 
 	"github.com/madvikinggod/kubelint/pkg/message"
-
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
 )
 
 type linter struct {
@@ -22,7 +23,10 @@ func NewLinter(cfg Config) *linter {
 func (l *linter) Run(src io.Reader) error {
 
 	//read each yaml file into a "k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
-	objs := []*unstructured.Unstructured{}
+	objs, err := readObjects(os.Stdin)
+	if err != nil {
+		return err
+	}
 
 	msgs := l.lintObjects(objs)
 
@@ -40,28 +44,29 @@ func (l *linter) Run(src io.Reader) error {
 	return nil
 }
 
-func (l *linter) lintObjects(objs []*unstructured.Unstructured) []message.Message {
+func readObjects(reader io.Reader) ([]*yaml.RNode, error) {
+	r := kio.ByteReader{
+		Reader: reader,
+	}
+	return r.Read()
+}
+
+func (l *linter) lintObjects(objs []*yaml.RNode) []message.Message {
 	msgs := []message.Message{}
 	for _, obj := range objs {
-		gvk := obj.GetAPIVersion() + "/" + obj.GetKind()
-		rules, found := l.cfg.Rules[gvk]
-		if !found {
-			namespacedName := fmt.Sprintf("%s/%s", obj.GetNamespace(), obj.GetName())
-			msg := message.SimpleMessage{
-				Name:   "NoRuleFound",
-				Info:   "Did not find any rules for",
-				Gvk:    gvk,
-				NName:  namespacedName,
+		id, err := obj.GetMeta()
+		tm := yaml.TypeMeta{
+			Kind:       id.Kind,
+			APIVersion: id.APIVersion,
+		}
+		if err != nil {
+			msgs = append(msgs, message.SimpleMessage{
+				Name:   "ReadingObject",
+				Info:   "Could not get objects metadata:\n" + obj.MustString(),
 				IsCrit: false,
-			}
-			msgs = append(msgs, msg)
+			})
 		}
-		for _, rule := range rules {
-			msg := rule.Check(obj)
-			if msg != nil {
-				msgs = append(msgs, msg)
-			}
-		}
+		id.GetIdentifier()
 	}
 	return msgs
 }

@@ -1,14 +1,14 @@
 package builtin
 
 import (
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/kustomize/kyaml/yaml"
 	"testing"
 )
 
 func Test_depractedAPICheck(t *testing.T) {
 	type args struct {
-		newVersion string
-		obj        *unstructured.Unstructured
+		newVersion yaml.TypeMeta
+		yaml       string
 	}
 	type want struct {
 		message    string
@@ -20,30 +20,34 @@ func Test_depractedAPICheck(t *testing.T) {
 		want *want
 	}{
 		{
-			name: "It should fail when passed an object",
+			name: "It should error with new version",
 			args: args{
-				newVersion: "fake.v1/stuff",
-				obj: &unstructured.Unstructured{Object: map[string]interface{}{
-					"apiVersion": "fake.v1beta1",
-					"kind":       "stuff",
-					"metadata": map[string]interface{}{
-						"name":      "fake-stuff",
-						"namespace": "fake-namespace",
-					},
-				}},
+				newVersion: yaml.TypeMeta{"test", "test.io/v1"},
+				yaml: `apiVersion: test.io/v1beta1
+kind: test
+metadata:
+  name: test-name
+  namespace: test-namespace`,
 			},
 			want: &want{
-				message:    "DeprecatedAPICheck - fake.v1beta1/stuff should not be used, use fake.v1/stuff - fake.v1beta1/stuff fake-namespace/fake-stuff",
+				message:    "DeprecatedAPICheck - {test test.io/v1beta1} should not be used, use {test test.io/v1} - {test-name test-namespace test.io/v1beta1 test}",
 				isCritical: true,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			rule := depractedAPICheck(tt.args.newVersion)
-			got := rule(tt.args.obj)
+			check := depractedAPICheck(tt.args.newVersion)
+			y, _ := yaml.Parse(tt.args.yaml)
+			meta, _ := y.GetMeta()
+			got := check(y, meta.GetIdentifier())
+
 			if (tt.want == nil) && (got == nil) {
 				return
+			}
+			if (tt.want == nil) != (got == nil) {
+				t.Fatalf("Check() = %t, want %t", tt.want == nil, got == nil)
+
 			}
 			if got.String() != tt.want.message {
 				t.Errorf("Check().String() = %v, want %v", got.String(), tt.want.message)

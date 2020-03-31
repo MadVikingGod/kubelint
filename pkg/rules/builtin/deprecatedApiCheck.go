@@ -2,47 +2,51 @@ package builtin
 
 import (
 	"fmt"
+
 	"github.com/madvikinggod/kubelint/pkg/message"
 	"github.com/madvikinggod/kubelint/pkg/rules"
-	"k8s.io/apimachinery/pkg/apis/meta/v1/unstructured"
+	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
-func depractedAPICheck(newVersion string) rules.Rule {
-	return func(obj *unstructured.Unstructured) message.Message {
-		return message.SimpleMessage{
-			Name:   "DeprecatedAPICheck",
-			Info:   fmt.Sprintf("%s should not be used, use %s", gvk(obj), newVersion),
-			Gvk:    gvk(obj),
-			NName:  nName(obj),
-			IsCrit: true,
+func depractedAPICheck(newVersion yaml.TypeMeta) rules.KRule {
+	return func(obj *yaml.RNode, id yaml.ResourceIdentifier) message.Message {
+		tm := yaml.TypeMeta{
+			Kind:       id.Kind,
+			APIVersion: id.APIVersion,
+		}
+		return message.KMessage{
+			RuleName: "DeprecatedAPICheck",
+			Info:     fmt.Sprintf("%v should not be used, use %v", tm, newVersion),
+			Id:       id,
+			IsCrit:   true,
 		}
 	}
 }
 
 func init() {
-	registerRule(depractedAPICheck("networking.k8s.io.v1/NetworkPolicy"), []string{
-		"extensions.v1beta1/NetworkPolicy",
+	registerKRule(depractedAPICheck(yaml.TypeMeta{"NetworkPolicy", "networking.k8s.io.v1"}), []yaml.TypeMeta{
+		{"NetworkPolicy", "extensions/v1beta1"},
 	})
-	registerRule(depractedAPICheck("extensions.v1beta1/PodSecurityPolicy"), []string{
-		"policy.v1beta1/PodSecurityPolicy",
+	registerKRule(depractedAPICheck(yaml.TypeMeta{"PodSecurityPolicy", "extensions.v1beta1"}), []yaml.TypeMeta{
+		{"PodSecurityPolicy", "policy.v1beta1"},
 	})
-	registerRule(depractedAPICheck("apps.v1/DaemonSet"), []string{
-		"extensions.v1beta1/DaemonSet",
-		"apps.v1beta2/DaemonSet",
+	registerKRule(depractedAPICheck(yaml.TypeMeta{"DaemonSet", "apps.v1"}), []yaml.TypeMeta{
+		{"DaemonSet", "extensions.v1beta1"},
+		{"DaemonSet", "apps.v1beta2"},
 	})
-	registerRule(depractedAPICheck("apps.v1/Deployment"), []string{
-		"extensions.v1beta1/Deployment",
-		"apps.v1beta1/Deployment",
-		"apps.v1beta2/Deployment",
+	registerKRule(depractedAPICheck(yaml.TypeMeta{"Deployment", "apps.v1"}), []yaml.TypeMeta{
+		{"Deployment", "extensions.v1beta1"},
+		{"Deployment", "apps.v1beta1"},
+		{"Deployment", "apps.v1beta2"},
 	})
-	registerRule(depractedAPICheck("apps.v1/StatefulSet"), []string{
-		"apps.v1beta1/StatefulSet",
-		"apps.v1beta2/StatefulSet",
+	registerKRule(depractedAPICheck(yaml.TypeMeta{"StatefulSet", "apps.v1"}), []yaml.TypeMeta{
+		{"StatefulSet", "apps.v1beta1"},
+		{"StatefulSet", "apps.v1beta2"},
 	})
-	registerRule(depractedAPICheck("apps.v1/ReplicaSet"), []string{
-		"extensions.v1beta1/ReplicaSet",
-		"apps.v1beta1/ReplicaSet",
-		"apps.v1beta2/ReplicaSet",
+	registerKRule(depractedAPICheck(yaml.TypeMeta{"ReplicaSet", "apps.v1"}), []yaml.TypeMeta{
+		{"ReplicaSet", "extensions.v1beta1"},
+		{"ReplicaSet", "apps.v1beta1"},
+		{"ReplicaSet", "apps.v1beta2"},
 	})
 
 }

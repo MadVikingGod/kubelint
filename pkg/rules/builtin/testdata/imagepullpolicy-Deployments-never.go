@@ -32,4 +32,3 @@ func NeverImagePullPolicyUnstructured() *unstructured.Unstructured {
 
 	return o
 }
-

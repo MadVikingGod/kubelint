@@ -32,4 +32,3 @@ func NoImageTagUnstructured() *unstructured.Unstructured {
 
 	return o
 }
-

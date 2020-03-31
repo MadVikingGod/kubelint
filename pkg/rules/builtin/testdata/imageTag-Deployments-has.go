@@ -32,4 +32,3 @@ func HasImageTagUnstructured() *unstructured.Unstructured {
 
 	return o
 }
-

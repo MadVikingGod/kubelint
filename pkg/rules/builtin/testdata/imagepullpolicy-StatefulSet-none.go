@@ -31,5 +31,3 @@ func SSNoImagePullPolicyUnstructured() *unstructured.Unstructured {
 
 	return o
 }
-
-
