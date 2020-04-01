@@ -1,8 +1,9 @@
 package builtin
 
 import (
-	"sigs.k8s.io/kustomize/kyaml/yaml"
 	"testing"
+
+	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
 func Test_depractedAPICheck(t *testing.T) {
@@ -22,7 +23,7 @@ func Test_depractedAPICheck(t *testing.T) {
 		{
 			name: "It should error with new version",
 			args: args{
-				newVersion: yaml.TypeMeta{"test", "test.io/v1"},
+				newVersion: yaml.TypeMeta{APIVersion: "test.io/v1", Kind: "test"},
 				yaml: `apiVersion: test.io/v1beta1
 kind: test
 metadata:

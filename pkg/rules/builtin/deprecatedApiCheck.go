@@ -17,36 +17,36 @@ func depractedAPICheck(newVersion yaml.TypeMeta) rules.Rule {
 		return message.KMessage{
 			RuleName: "DeprecatedAPICheck",
 			Info:     fmt.Sprintf("%v should not be used, use %v", tm, newVersion),
-			Id:       id,
+			ID:       id,
 			IsCrit:   true,
 		}
 	}
 }
 
 func init() {
-	registerRule(depractedAPICheck(yaml.TypeMeta{"NetworkPolicy", "networking.k8s.io/v1"}), []yaml.TypeMeta{
-		{"NetworkPolicy", "extensions/v1beta1"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{APIVersion: "networking.k8s.io/v1", Kind: "NetworkPolicy"}), []yaml.TypeMeta{
+		{APIVersion: "extensions/v1beta1", Kind: "NetworkPolicy"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"PodSecurityPolicy", "extensions/v1beta1"}), []yaml.TypeMeta{
-		{"PodSecurityPolicy", "policy/v1beta1"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{APIVersion: "extensions/v1beta1", Kind: "PodSecurityPolicy"}), []yaml.TypeMeta{
+		{APIVersion: "policy/v1beta1", Kind: "PodSecurityPolicy"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"DaemonSet", "apps/v1"}), []yaml.TypeMeta{
-		{"DaemonSet", "extensions/v1beta1"},
-		{"DaemonSet", "apps/v1beta2"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{APIVersion: "apps/v1", Kind: "DaemonSet"}), []yaml.TypeMeta{
+		{APIVersion: "extensions/v1beta1", Kind: "DaemonSet"},
+		{APIVersion: "apps/v1beta2", Kind: "DaemonSet"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"Deployment", "apps/v1"}), []yaml.TypeMeta{
-		{"Deployment", "extensions/v1beta1"},
-		{"Deployment", "apps/v1beta1"},
-		{"Deployment", "apps/v1beta2"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{APIVersion: "apps/v1", Kind: "Deployment"}), []yaml.TypeMeta{
+		{APIVersion: "extensions/v1beta1", Kind: "Deployment"},
+		{APIVersion: "apps/v1beta1", Kind: "Deployment"},
+		{APIVersion: "apps/v1beta2", Kind: "Deployment"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"StatefulSet", "apps/v1"}), []yaml.TypeMeta{
-		{"StatefulSet", "apps/v1beta1"},
-		{"StatefulSet", "apps/v1beta2"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{APIVersion: "apps/v1", Kind: "StatefulSet"}), []yaml.TypeMeta{
+		{APIVersion: "apps/v1beta1", Kind: "StatefulSet"},
+		{APIVersion: "apps/v1beta2", Kind: "StatefulSet"},
 	})
-	registerRule(depractedAPICheck(yaml.TypeMeta{"ReplicaSet", "apps/v1"}), []yaml.TypeMeta{
-		{"ReplicaSet", "extensions/v1beta1"},
-		{"ReplicaSet", "apps/v1beta1"},
-		{"ReplicaSet", "apps/v1beta2"},
+	registerRule(depractedAPICheck(yaml.TypeMeta{APIVersion: "apps/v1", Kind: "ReplicaSet"}), []yaml.TypeMeta{
+		{APIVersion: "extensions/v1beta1", Kind: "ReplicaSet"},
+		{APIVersion: "apps/v1beta1", Kind: "ReplicaSet"},
+		{APIVersion: "apps/v1beta2", Kind: "ReplicaSet"},
 	})
 
 }

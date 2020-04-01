@@ -1,13 +1,20 @@
 # Parameters
 BINARY_NAME=kubelint
 
-all: test build
+all: test lint fmt build
 
 build:
-	go build -o bin/$(BINARY_NAME) -v
+	go build -o bin/$(BINARY_NAME) -v ./cmd
+
+lint:
+	go vet ./...
+	golint ./...
+	golangci-lint run ./...
+
+fmt:
+	go fmt ./...
 
 test:
-	go fmt ./...
 	go test -v ./...
 
 clean:

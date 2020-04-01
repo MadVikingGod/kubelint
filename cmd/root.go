@@ -17,9 +17,10 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/madvikinggod/kubelint/pkg/linter"
 	"github.com/spf13/cobra"
-	"os"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
@@ -45,7 +46,7 @@ to quickly create a Cobra application.`,
 
 func run(cmd *cobra.Command, args []string) {
 	lint := linter.NewLinter(linter.DefaultConfig())
-	lint.Run(os.Stdin)
+	_ = lint.Run(os.Stdin)
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.

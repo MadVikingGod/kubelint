@@ -3,6 +3,7 @@ package linter
 import (
 	"fmt"
 	"io"
+
 	"sigs.k8s.io/kustomize/kyaml/kio"
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 
@@ -69,7 +70,7 @@ func (l *linter) lintObjects(objs []*yaml.RNode) []message.Message {
 			msgs = append(msgs, message.KMessage{
 				RuleName: "Linting",
 				Info:     "No rule found",
-				Id:       id.GetIdentifier(),
+				ID:       id.GetIdentifier(),
 				IsCrit:   false,
 			})
 			continue

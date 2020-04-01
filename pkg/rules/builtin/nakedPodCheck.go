@@ -9,7 +9,7 @@ func NakedPodCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) message.Message 
 	return message.KMessage{
 		RuleName: "NakedPodCheck",
 		Info:     "Pods should not be used directly, apps/v1 Deployments are recommended",
-		Id:       id,
+		ID:       id,
 		IsCrit:   true,
 	}
 }
@@ -17,6 +17,6 @@ func NakedPodCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) message.Message 
 func init() {
 
 	registerRule(NakedPodCheck, []yaml.TypeMeta{
-		{"Pod", "v1"},
+		{APIVersion: "v1", Kind: "Pod"},
 	})
 }

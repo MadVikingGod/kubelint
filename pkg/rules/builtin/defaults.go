@@ -6,6 +6,7 @@ import (
 	"github.com/madvikinggod/kubelint/pkg/rules"
 )
 
+// DefaultRules are the builtin rules
 var DefaultRules = map[yaml.TypeMeta][]rules.Rule{}
 
 func registerRule(r rules.Rule, gvks []yaml.TypeMeta) {

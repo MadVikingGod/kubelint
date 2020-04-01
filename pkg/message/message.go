@@ -28,12 +28,12 @@ func (s SimpleMessage) IsCritical() bool {
 type KMessage struct {
 	RuleName string
 	Info     string
-	Id       yaml.ResourceIdentifier
+	ID       yaml.ResourceIdentifier
 	IsCrit   bool
 }
 
 func (k KMessage) String() string {
-	return fmt.Sprintf("%s - %s - %s", k.RuleName, k.Info, k.Id)
+	return fmt.Sprintf("%s - %s - %s", k.RuleName, k.Info, k.ID)
 }
 func (k KMessage) IsCritical() bool {
 	return k.IsCrit

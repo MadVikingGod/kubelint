@@ -26,7 +26,7 @@ func ImagePullPolicyAlwaysCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) mes
 		return message.KMessage{
 			RuleName: "ImagePullPolicyAlways",
 			Info:     "Could not find containers",
-			Id:       id,
+			ID:       id,
 			IsCrit:   true,
 		}
 	}
@@ -35,7 +35,7 @@ func ImagePullPolicyAlwaysCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) mes
 		return message.KMessage{
 			RuleName: "ImagePullPolicyAlways",
 			Info:     err.Error(),
-			Id:       id,
+			ID:       id,
 			IsCrit:   true,
 		}
 	}
@@ -45,7 +45,7 @@ func ImagePullPolicyAlwaysCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) mes
 		return message.KMessage{
 			RuleName: "ImagePullPolicyAlways",
 			Info:     "Could not find initContainers",
-			Id:       id,
+			ID:       id,
 			IsCrit:   true,
 		}
 	}
@@ -54,7 +54,7 @@ func ImagePullPolicyAlwaysCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) mes
 		return message.KMessage{
 			RuleName: "ImagePullPolicyAlways",
 			Info:     err.Error(),
-			Id:       id,
+			ID:       id,
 			IsCrit:   true,
 		}
 	}
@@ -65,10 +65,10 @@ func ImagePullPolicyAlwaysCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) mes
 func init() {
 
 	registerRule(ImagePullPolicyAlwaysCheck, []yaml.TypeMeta{
-		{"Deployment", "apps/v1"},
-		{"StatefulSet", "apps/v1"},
-		{"ReplicaSet", "apps/v1"},
-		{"DaemonSet", "apps/v1"},
-		{"Job", "batch/v1"},
+		{APIVersion: "apps/v1", Kind: "Deployment"},
+		{APIVersion: "apps/v1", Kind: "StatefulSet"},
+		{APIVersion: "apps/v1", Kind: "ReplicaSet"},
+		{APIVersion: "apps/v1", Kind: "DaemonSet"},
+		{APIVersion: "batch/v1", Kind: "Job"},
 	})
 }
