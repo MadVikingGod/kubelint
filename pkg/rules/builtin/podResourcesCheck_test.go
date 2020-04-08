@@ -7,7 +7,7 @@ import (
 	"sigs.k8s.io/kustomize/kyaml/yaml"
 )
 
-func TestImageTagCheck(t *testing.T) {
+func TestPodResourcesCheck(t *testing.T) {
 	type args struct {
 		yaml string
 	}
@@ -21,41 +21,32 @@ func TestImageTagCheck(t *testing.T) {
 		want *want
 	}{
 		{
-			name: "Should fail if image tag is latest",
-			args: args{yaml: testdata.LatestImageTagYaml},
+			name: "Should fail if there are no pod resources",
+			args: args{yaml: testdata.NoResources},
 			want: &want{
-				message:    "ImageTagCheck - container latestImageTagContainer has an image tag of latest - {latestImageTag latestImageTag apps/v1 Deployment}",
+				message:    "PodResourcesCheck - container noResourceContainer does not have resources - {noResource noResource apps/v1 Deployment}",
 				isCritical: true,
 			},
 		},
 		{
-			name: "Should fail if image tag is missing",
-			args: args{yaml: testdata.NoImageTagYaml},
-			want: &want{
-				message:    "ImageTagCheck - container noImageTagContainer has no image tag - {noImageTag noImageTag apps/v1 Deployment}",
-				isCritical: true,
-			},
-		},
-		{
-			name: "Should pass if image tag looks valid",
-			args: args{yaml: testdata.HasImageTagYaml},
+			name: "Should pass if there are pod resources",
+			args: args{yaml: testdata.HasResources},
 			want: nil,
 		},
 		{
-			name: "Should fail if image tag is missing in initContainers",
-			args: args{yaml: testdata.NoImageTagInitContainer},
+			name: "Should fail if there are no pod resources in initContainers",
+			args: args{yaml: testdata.NoResourcesInitContainers},
 			want: &want{
-				message:    "ImageTagCheck - container noImageTagInitContainer has no image tag - {noImageTagInit noImageTagInit apps/v1 Deployment}",
+				message:    "PodResourcesCheck - container noResourceInitContainer does not have resources - {noResourceInit noResourceInit apps/v1 Deployment}",
 				isCritical: true,
 			},
-		},
-	}
+		}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			obj, _ := yaml.Parse(tt.args.yaml)
 			meta, _ := obj.GetMeta()
 
-			got := ImageTagCheck(obj, meta.GetIdentifier())
+			got := PodResourcesCheck(obj, meta.GetIdentifier())
 
 			if (tt.want == nil) && (got == nil) {
 				return
