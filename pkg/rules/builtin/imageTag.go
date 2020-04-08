@@ -50,3 +50,13 @@ func ImageTagCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) message.Message 
 
 	return nil
 }
+
+func init() {
+	registerRule(ImageTagCheck, []yaml.TypeMeta{
+		{APIVersion: "apps/v1", Kind: "Deployment"},
+		{APIVersion: "apps/v1", Kind: "StatefulSet"},
+		{APIVersion: "apps/v1", Kind: "ReplicaSet"},
+		{APIVersion: "apps/v1", Kind: "DaemonSet"},
+		{APIVersion: "batch/v1", Kind: "Job"},
+	})
+}
