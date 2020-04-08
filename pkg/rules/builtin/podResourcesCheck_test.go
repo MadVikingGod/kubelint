@@ -28,6 +28,11 @@ func TestPodResourcesCheck(t *testing.T) {
 				isCritical: true,
 			},
 		},
+		{
+			name: "Should pass if there are pod resources",
+			args: args{yaml: testdata.HasResources},
+			want: nil,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
