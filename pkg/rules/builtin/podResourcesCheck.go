@@ -39,6 +39,25 @@ func PodResourcesCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) message.Mess
 		}
 	}
 
+	containers, err = obj.Pipe(yaml.LookupCreate(yaml.SequenceNode, "spec", "template", "spec", "initContainers"))
+	if err != nil {
+		return message.KMessage{
+			RuleName: "PodResourcesCheck",
+			Info:     "Could not find initContainers",
+			ID:       id,
+			IsCrit:   true,
+		}
+	}
+	err = containers.VisitElements(prCheck)
+	if err != nil {
+		return message.KMessage{
+			RuleName: "PodResourcesCheck",
+			Info:     err.Error(),
+			ID:       id,
+			IsCrit:   true,
+		}
+	}
+
 	return nil
 }
 

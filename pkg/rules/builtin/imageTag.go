@@ -48,6 +48,26 @@ func ImageTagCheck(obj *yaml.RNode, id yaml.ResourceIdentifier) message.Message 
 		}
 	}
 
+	containers, err = obj.Pipe(yaml.LookupCreate(yaml.SequenceNode, "spec", "template", "spec", "initContainers"))
+	if err != nil {
+		return message.KMessage{
+			RuleName: "ImageTagCheck",
+			Info:     "Could not find containers",
+			ID:       id,
+			IsCrit:   true,
+		}
+	}
+
+	err = containers.VisitElements(tagCheck)
+	if err != nil {
+		return message.KMessage{
+			RuleName: "ImageTagCheck",
+			Info:     err.Error(),
+			ID:       id,
+			IsCrit:   true,
+		}
+	}
+
 	return nil
 }
 

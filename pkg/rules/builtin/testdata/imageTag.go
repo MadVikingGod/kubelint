@@ -38,3 +38,19 @@ spec:
         - name: noImageTagContainer
           image: thisDoesnthaveaTag
 `
+
+var NoImageTagInitContainer = `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: noImageTagInit
+  namespace: noImageTagInit
+spec:
+  template:
+    spec:
+      containers:
+        - name: hasImageTagContainer
+          image: ThisHasATag:Thisisabogustag
+      initContainers:
+        - name: noImageTagInitContainer
+          image: ThisDoesNotHaveATag
+`

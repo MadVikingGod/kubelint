@@ -41,6 +41,14 @@ func TestImageTagCheck(t *testing.T) {
 			args: args{yaml: testdata.HasImageTagYaml},
 			want: nil,
 		},
+		{
+			name: "Should fail if image tag is missing in initContainers",
+			args: args{yaml: testdata.NoImageTagInitContainer},
+			want: &want{
+				message:    "ImageTagCheck - container noImageTagInitContainer has no image tag - {noImageTagInit noImageTagInit apps/v1 Deployment}",
+				isCritical: true,
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

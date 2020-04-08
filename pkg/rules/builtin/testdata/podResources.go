@@ -23,3 +23,17 @@ spec:
       containers:
         - name: noResourceContainer
 `
+var NoResourcesInitContainers = `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: noResourceInit
+  namespace: noResourceInit
+spec:
+  template:
+    spec:
+      containers:
+        - name: hasResourceContainer
+          resources: {}
+      initContainers:
+        - name: noResourceInitContainer
+`

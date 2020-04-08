@@ -33,7 +33,14 @@ func TestPodResourcesCheck(t *testing.T) {
 			args: args{yaml: testdata.HasResources},
 			want: nil,
 		},
-	}
+		{
+			name: "Should fail if there are no pod resources in initContainers",
+			args: args{yaml: testdata.NoResourcesInitContainers},
+			want: &want{
+				message:    "PodResourcesCheck - container noResourceInitContainer does not have resources - {noResourceInit noResourceInit apps/v1 Deployment}",
+				isCritical: true,
+			},
+		}}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			obj, _ := yaml.Parse(tt.args.yaml)
